@@ -1,0 +1,34 @@
+{
+  "name": "ch.lab9.auth",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Some description about this application",
+  "main": "app.js",
+  "author": "Daniel Seifert",
+  "license": "ISC",
+  "scripts": {
+    "serve": "nodemon ./bin/www",
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "bcryptjs": "latest",
+    "connect-mongo": "^3.0.0",
+    "cookie-parser": "latest",
+    "cors": "latest",
+    "csurf": "^1.10.0",
+    "debug": "latest",
+    "express": "latest",
+    "express-device": "^0.4.2",
+    "express-session": "^1.16.2",
+    "express-validator": "^6.1.1",
+    "http-errors": "latest",
+    "jsonwebtoken": "latest",
+    "mongoose": "latest",
+    "morgan": "latest",
+    "nodemailer": "^6.3.0",
+    "randomstring": "^1.1.5"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.1"
+  }
+}
