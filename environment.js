@@ -1,8 +1,10 @@
 const environment = {
-    port: 64064,
+    port: "3000",
     mongo: {
-        auth: createConnectionObject('coa-auth25-lab', 'TDE#b!v+N9tz93Bd', 'auth'),
-        session: createConnectionObject('coa-session86-lab', 'QHPhLEfNdm5vs8AU', 'session'),
+        auth: createConnectionObject('coa-auth25-lab', 'TDE#b!v+N9tz93Bd', 'auth')
+    },
+    crypto: {
+        key: "@mst]{gl48(fEu/7Q*I6|q#he[]!v?5p"
     },
     jwt: {
         secret: '7Zoq0Dc6QT]w}kL8**b^U)HeQ"e~u{%oxfFQUT]K5C1P]TQJ$@SSu1_p./RWM8k'
@@ -14,17 +16,33 @@ const environment = {
         cookie: {
             secure: true
         }
+    },
+    mail: {
+        host: "eleven.ssl.hosttech.eu",
+        port: 465,
+        secure: true,
+        auth: {
+            user: "noreply@lab9.ch",
+            pass: "G9M=*ABm%?m&WMVX"
+        }
     }
 };
 
 module.exports = environment;
 
+/**
+ * Creates a mongodb connection string
+ * @param username the username
+ * @param password the password
+ * @param database the database name
+ * @returns {{password: *, database: *, port: number, url: string, username: *}}
+ */
 function createConnectionObject(username, password, database) {
     const data = {
         username: username,
         password: password,
         database: database,
-        url: '127.0.0.1',
+        url: 'mongo-auth',
         port: 27017
     };
     data.connectionString = `mongodb://${data.username}:${data.password}@${data.url}:${data.port}/${data.database}`;

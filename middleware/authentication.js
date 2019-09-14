@@ -22,17 +22,12 @@ module.exports = {
     verifyToken: async (req, res, next) => {
         jwt.verify(req.token, env.jwt.secret, (err, authData) => {
             if (err) {
-                return res.status(401).json({error: "Bearer header is invalid."});
+                return res.status(401).json({error: "Bearer token is invalid."});
             } else {
-                req.authData = authData;
+                req.payload = authData;
                 next();
             }
         });
-    },
-    verifySession: async (req, res, next) => {
-        console.log(req.session);
-        console.log("Auth:    " + req.authData.user.id);
-        next();
     },
     checkBlacklist: async (req, res, next) => {
         const result = await Blacklist.findOne({token: req.token});

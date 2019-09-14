@@ -15,7 +15,6 @@
     "connect-mongo": "^3.0.0",
     "cookie-parser": "latest",
     "cors": "latest",
-    "csurf": "^1.10.0",
     "debug": "latest",
     "express": "latest",
     "express-device": "^0.4.2",
