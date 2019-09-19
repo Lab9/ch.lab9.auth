@@ -20,6 +20,7 @@ const algorithm = "aes-256-cbc";
 const key = Buffer.from(env.crypto.key);
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const uuid = require('uuid/v4');
 const {check, validationResult} = require('express-validator');
 const {isValidToken, verifyToken, checkBlacklist} = require('../middleware/authentication');
 
@@ -106,18 +107,29 @@ router.post('/login', [
 
 router.get('/user', isValidToken, verifyToken, checkBlacklist, async (req, res) => {
     const payload = resolveJWTPayload(req.payload);
-    const userId = payload.user.id;
+    const userId = payload.user.mid;
     const user = await User.findById(userId);
     if (Boolean(user)) {
-        return res.status(200).json({
-            id: user._id,
-            email: user.email,
-            lastLogin: user.lastLogin,
-            createdAt: user.createdAt,
-            lastUpdate: user.lastUpdate,
-            admin: user.admin,
-            active: user.active
-        });
+        return res.status(200).json(parseUser(user));
+    } else {
+        return res.status(500).json({error: "User not found."})
+    }
+});
+
+router.get('/user/:field', isValidToken, verifyToken, checkBlacklist, async (req, res) => {
+    const payload = resolveJWTPayload(req.payload);
+    const field = req.params.field;
+    const userId = payload.user.mid;
+    const user = await User.findById(userId);
+    if (Boolean(user)) {
+        const parsedUser = parseUser(user);
+        if (field in parsedUser) {
+            const result = {};
+            result[field] = parsedUser[field];
+            return res.status(200).json(result);
+        } else {
+            return res.status(404).json({error: "Field not found."})
+        }
     } else {
         return res.status(500).json({error: "User not found."})
     }
@@ -125,21 +137,21 @@ router.get('/user', isValidToken, verifyToken, checkBlacklist, async (req, res) 
 
 router.get('/logout', isValidToken, verifyToken, checkBlacklist, async (req, res) => {
     const payload = resolveJWTPayload(req.payload);
-    const userId = payload.user.id;
+    const userId = payload.user.mid;
     await Blacklist.create({token: req.token, userId: userId});
     return res.json({message: "Logged out."});
 });
 
 router.get('/validate', isValidToken, verifyToken, checkBlacklist, async (req, res) => {
     const payload = resolveJWTPayload(req.payload);
-    const userId = payload.user.id;
+    const userId = payload.user.mid;
     const user = await User.findById(userId);
     return res.status(200).json({valid: user.active});
 });
 
 router.get('/validate/admin', isValidToken, verifyToken, checkBlacklist, async (req, res) => {
     const payload = resolveJWTPayload(req.payload);
-    const userId = payload.user.id;
+    const userId = payload.user.mid;
     const user = await User.findById(userId);
     return res.status(200).json({valid: user.admin});
 });
@@ -147,7 +159,7 @@ router.get('/validate/admin', isValidToken, verifyToken, checkBlacklist, async (
 // Update Handle
 router.patch('/user', isValidToken, verifyToken, checkBlacklist, async (req, res) => {
     const payload = resolveJWTPayload(req.payload);
-    const userId = payload.user.id;
+    const userId = payload.user.mid;
     const user = await User.findById(userId);
     if (user) {
         const {email, password} = req.body;
@@ -171,6 +183,18 @@ router.patch('/user', isValidToken, verifyToken, checkBlacklist, async (req, res
     }
 });
 
+function parseUser(user) {
+    return {
+        id: user.userId,
+        email: user.email,
+        lastLogin: user.lastLogin,
+        createdAt: user.createdAt,
+        lastUpdate: user.lastUpdate,
+        admin: user.admin,
+        active: user.active
+    }
+}
+
 /**
  *
  * @param user
@@ -193,10 +217,12 @@ function logLoginFor(user, req, success) {
  * @param password
  */
 async function createUser(email, password) {
+    const userId = uuid();
     const salt = bcrypt.genSaltSync(16);
     const secret = crypto.randomBytes(64).toString('hex');
     const hash = bcrypt.hashSync(password, salt);
     const newUser = new User({
+        userId: userId,
         email: email,
         password: hash,
         secret: secret,
@@ -218,7 +244,7 @@ function sendWelcomeEmailTo(email) {
     transporter.sendMail({
         from: 'noreply@lab9.ch',
         to: `${email}`,
-        subject: 'Lab9 Account verification',
+        subject: 'Welcome to Lab9',
         text: 'Welcome!'
     });
 }
@@ -233,7 +259,8 @@ function sendWelcomeEmailTo(email) {
 function createJWTPayload(user) {
     return {
         user: {
-            id: encrypt(String(user._id)),
+            mid: encrypt(String(user._id)),
+            userId: encrypt(String(user.userId)),
             secret: encrypt(String(user.secret)),
             authenticated: Date.now()
         }
@@ -250,7 +277,8 @@ function createJWTPayload(user) {
 function resolveJWTPayload(payload) {
     return {
         user: {
-            id: decrypt(payload.user.id),
+            mid: decrypt(payload.user.mid),
+            userId: decrypt(payload.user.userId),
             secret: decrypt(payload.user.secret),
             authenticated: payload.user.authenticated
         }

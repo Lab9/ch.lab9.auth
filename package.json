@@ -25,7 +25,8 @@
     "mongoose": "latest",
     "morgan": "latest",
     "nodemailer": "^6.3.0",
-    "randomstring": "^1.1.5"
+    "randomstring": "^1.1.5",
+    "uuid": "^3.3.3"
   },
   "devDependencies": {
     "nodemon": "^1.19.1"
