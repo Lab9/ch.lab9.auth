@@ -17,8 +17,6 @@ I
 package.json,7\0\7030d0b2f71b999ff89a343de08c414af32fc93a
 C
 models/BlackList.js,5\8\58d5f4c57d592aae421adfa6a2734ff2cba49cd9
->
-environment.js,e\7\e75f4c0eea122f5bf18682588a5846e1feeb1082
 B
 middleware/cors.js,9\c\9c786bbea28ee43d9f7b338da862256299ce7310
 L
@@ -29,7 +27,9 @@ E
 models/User.js,5\9\59316e83599fe4c2c79524096be7e107fbf4b61d
 >
 routes/auth.js,8\b\8bbe7473c2ec08c224aead7ec6d668fb50f27965
-E
-middleware/session.js,d\d\dd6ddd3e4dcf42851c6297f18f7ef1537d2d067b
-B
-middleware/csrf.js,8\0\80c0e0b9f9fddb4cf5229ce34512627252805e61
+K
+.idea/dictionaries/info.xml,f\c\fccea99293fee99220623e067ca724103003b56a
+A
+package-lock.json,f\a\fa288d1472d29beccb489a676f68739ad365fc47
+9
+	config.js,1\6\1677f29b39bf4fb465d7689c0b6b95fc646fcdbc

@@ -5,7 +5,7 @@ const BlackListSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    userId: {
+    lid: {
         type: String,
         required: true
     }

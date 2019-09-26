@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 
-const environment = require('../environment');
+const environment = require('../config');
 const app = require('../app');
 const debug = require('debug')('ch.lab9.auth:server');
 const http = require('http');
@@ -13,7 +13,7 @@ const http = require('http');
  * Get port from environment and store in Express.
  */
 
-const port = normalizePort(process.env.PORT || environment.port);
+const port = normalizePort(process.env.PORT || environment.PORT);
 app.set('port', port);
 
 /**

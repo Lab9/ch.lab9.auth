@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const env = require('../environment');
+const env = require('../config');
 const Blacklist = require('../models/BlackList');
 
 module.exports = {
@@ -20,7 +20,7 @@ module.exports = {
         }
     },
     verifyToken: async (req, res, next) => {
-        jwt.verify(req.token, env.jwt.secret, (err, authData) => {
+        jwt.verify(req.token, env.JWT.SECRET, (err, authData) => {
             if (err) {
                 return res.status(401).json({error: "Bearer token is invalid."});
             } else {

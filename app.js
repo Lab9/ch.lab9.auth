@@ -1,6 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const environment = require('./environment');
+const config = require('./config');
 
 const app = express();
 
@@ -22,7 +22,7 @@ app.use(require('./routes/error').errorCatcher);
 app.use(require('./routes/error').errorHandler);
 
 // Database
-mongoose.connect(environment.mongo.auth.connectionString, {useNewUrlParser: true, useUnifiedTopology: true})
+mongoose.connect(config.MONGO.AUTH.CONNECTION_STRING, config.MONGO.AUTH.OPTIONS)
     .then(() => console.log(`AUTH: MongoDB connected ...`))
     .catch(err => console.error(err));
 

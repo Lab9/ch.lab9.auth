@@ -2,10 +2,16 @@
   "name": "ch.lab9.auth",
   "version": "1.0.0",
   "private": true,
-  "description": "Some description about this application",
-  "main": "app.js",
+  "description": "Lab9 Authentication Service",
+  "main": "./bin/www",
   "author": "Daniel Seifert",
   "license": "ISC",
+  "keywords": [
+    "Auth",
+    "Authentication",
+    "Lab9",
+    "Service"
+  ],
   "scripts": {
     "serve": "nodemon ./bin/www",
     "start": "node ./bin/www"
@@ -18,7 +24,6 @@
     "debug": "latest",
     "express": "latest",
     "express-device": "^0.4.2",
-    "express-session": "^1.16.2",
     "express-validator": "^6.1.1",
     "http-errors": "latest",
     "jsonwebtoken": "latest",

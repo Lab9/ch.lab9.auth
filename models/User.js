@@ -1,10 +1,16 @@
 const mongoose = require('mongoose');
 
 const UserSchema = new mongoose.Schema({
-    userId: {
+    lid: {
         type: String,
         required: true,
         unique: true
+    },
+    type: {
+        type: String,
+        required: true,
+        enum: ['coa', 'app', 'esc', 'lua'],
+        default: 'lua'
     },
     email: {
         type: String,
